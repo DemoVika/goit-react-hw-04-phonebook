@@ -3,8 +3,7 @@ import css from './contactForm.module.css';
 import shortid from 'shortid';
 import { useState } from 'react';
 
-export const ContactForm = props => {
-  console.log(props);
+export const ContactForm = ({ handleSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -24,7 +23,7 @@ export const ContactForm = props => {
       number, //: number
       id: shortid.generate(),
     };
-    props.handleSubmit(contact);
+    handleSubmit(contact);
     setName('');
     setNumber('');
   };

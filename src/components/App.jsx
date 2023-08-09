@@ -1,30 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import css from './app.module.css';
 import { ContactForm } from './сontactForm/ContactForm';
 import { ContactList } from './contactList/ContactList';
 import { Filter } from './filter/Filter';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(() =>
+    JSON.parse(localStorage.getItem('contacts') || [])
+  );
   const [filter, setFilter] = useState('');
-  const onContactsMountRef = useRef(false);
 
   useEffect(() => {
-    try {
-      const storageContacts = JSON.parse(localStorage.getItem('contacts'));
-      if (storageContacts) {
-        setContacts(storageContacts);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (onContactsMountRef.current === false) {
-      onContactsMountRef.current = true;
-      return;
-    }
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
@@ -33,7 +19,6 @@ export const App = () => {
       alert(`${contact.name} is already in contacts`);
       return;
     }
-
     setContacts(prevState => [...prevState, contact]);
   };
 
